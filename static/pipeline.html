@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            width: 80%;
+            max-width: 800px;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            background-color: white;
+        }
+        .nav-links {
+            margin-top: 20px;
+        }
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 18px;
+        }
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        .description {
+            text-align: left;
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            color: #333;
+        }
+        .references {
+            margin-top: 20px;
+            text-align: left;
+            color: #ffffff;
+        }
+        .references a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+        .references a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Network Details</h1>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/pipeline">View Pipeline</a>
+        </div>
+        <div class="description">
+            <h2>Light-enhancement curves</h2>
+            <p>A light-enhancement curve is a kind of curve that can map a low-light image to its enhanced version automatically, where the self-adaptive curve parameters are solely dependent on the input image. When designing such a curve, three objectives should be taken into account:</p>
+            <ul>
+                <li>Each pixel value of the enhanced image should be in the normalized range [0,1], in order to avoid information loss induced by overflow truncation.</li>
+                <li>It should be monotonous, to preserve the contrast between neighboring pixels.</li>
+                <li>The shape of this curve should be as simple as possible, and the curve should be differentiable to allow backpropagation.</li>
+            </ul>
+            <p>The light-enhancement curve is separately applied to three RGB channels instead of solely on the illumination channel. The three-channel adjustment can better preserve the inherent color and reduce the risk of over-saturation.</p>
+        </div>
+        <img src="/pipeline-image" alt="Light-enhancement curves">
+
+        <div class="description">
+            <h2>DCE-Net</h2>
+            <p>The DCE-Net is a lightweight deep neural network that learns the mapping between an input image and its best-fitting curve parameter maps. The input to the DCE-Net is a low-light image while the outputs are a set of pixel-wise curve parameter maps for corresponding higher-order curves. It is a plain CNN of seven convolutional layers with symmetrical concatenation. Each layer consists of 32 convolutional kernels of size 3×3 and stride 1 followed by the ReLU activation function. The last convolutional layer is followed by the Tanh activation function, which produces 24 parameter maps for 8 iterations, where each iteration requires three curve parameter maps for the three channels.</p>
+        </div>
+        <img src="/network-image" alt="DCE-Net">
+        <div class="references">
+            <h2>References</h2>
+            <p>Guo, C., Li, C., Guo, J., Loy, C. C., Hou, J., Kwong, S., & Cong, R. (2020). <a href="https://openaccess.thecvf.com/content_CVPR_2020/papers/Guo_Zero-Reference_Deep_Curve_Estimation_for_Low-Light_Image_Enhancement_CVPR_2020_paper.pdf" target="_blank">Zero-Reference Deep Curve Estimation for Low-Light Image Enhancement</a>. Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2020, 1780-1789.</p>
+        </div>
+    </div>
+</body>
+</html>

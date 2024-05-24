@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero-DCE: Low-Light Image Enhancement</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            width: 80%;
+            max-width: 800px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        input[type="file"] {
+            display: block;
+            margin: 20px auto;
+        }
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            border-radius: 12px;
+        }
+        button:hover {
+            background-color: white;
+            color: black;
+            border: 2px solid #4CAF50;
+        }
+        #output {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .image-container {
+            flex: 1;
+            min-width: 200px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            background-color: white;
+        }
+        @media (max-width: 768px) {
+            .image-container {
+                flex: 100%;
+            }
+        }
+        #loading {
+            display: none;
+            font-size: 24px;
+        }
+        .nav-links {
+            margin-top: 20px;
+        }
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 18px;
+        }
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        .spinner {
+            display: none;
+            margin: 20px auto;
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .references {
+            margin-top: 20px;
+            text-align: left;
+            color: #ffffff;
+        }
+        .references a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+        .references a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Zero-DCE: Low-Light Image Enhancement</h1>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/pipeline">View Pipeline</a>
+            <a href="/thank-you">Thank You</a> <!-- Added link to Thank You page -->
+        </div>
+        <input type="file" id="upload" accept="image/*"><br>
+        <button onclick="uploadImage()">Upload and Enhance</button>
+        <div id="loading">
+            <div class="spinner"></div>
+            <p>Processing...</p>
+        </div>
+        <div id="output"></div>
+        <div class="references">
+            <h2>References</h2>
+            <p>Guo, C., Li, C., Guo, J., Loy, C. C., Hou, J., Kwong, S., & Cong, R. (2020). <a href="https://openaccess.thecvf.com/content_CVPR_2020/papers/Guo_Zero-Reference_Deep_Curve_Estimation_for_Low-Light_Image_Enhancement_CVPR_2020_paper.pdf" target="_blank">Zero-Reference Deep Curve Estimation for Low-Light Image Enhancement</a>. Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2020, 1780-1789.</p>
+        </div>
+    </div>
+    <script>
+        async function uploadImage() {
+            const upload = document.getElementById('upload');
+            const file = upload.files[0];
+            if (!file) {
+                alert('Please select a file!');
+                return;
+            }
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const loading = document.getElementById('loading');
+            const output = document.getElementById('output');
+            const spinner = document.querySelector('.spinner');
+            loading.style.display = 'block';
+            spinner.style.display = 'block';
+            output.innerHTML = '';
+
+            const response = await fetch('/predict/', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            loading.style.display = 'none';
+            spinner.style.display = 'none';
+            output.innerHTML = `
+                <div class="image-container">
+                    <h3>Original Image:</h3>
+                    <img src="${data.original_filename}" alt="Original Image">
+                </div>
+                <div class="image-container">
+                    <h3>Enhanced Image:</h3>
+                    <img src="${data.enhanced_filename}" alt="Enhanced Image">
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
