@@ -95,6 +95,13 @@
             <p>The DCE-Net is a lightweight deep neural network that learns the mapping between an input image and its best-fitting curve parameter maps. The input to the DCE-Net is a low-light image while the outputs are a set of pixel-wise curve parameter maps for corresponding higher-order curves. It is a plain CNN of seven convolutional layers with symmetrical concatenation. Each layer consists of 32 convolutional kernels of size 3×3 and stride 1 followed by the ReLU activation function. The last convolutional layer is followed by the Tanh activation function, which produces 24 parameter maps for 8 iterations, where each iteration requires three curve parameter maps for the three channels.</p>
         </div>
         <img src="/network-image" alt="DCE-Net">
+
+        <div class="description">
+            <h2>Training Details</h2>
+            <p><strong>Training Date:</strong> 24.05.2024</p>
+            <p><strong>Dataset:</strong> <a href="https://huggingface.co/datasets/geekyrakshit/LoL-Dataset" target="_blank">LoL Dataset</a></p>
+        </div>
+
         <div class="references">
             <h2>References</h2>
             <p>Guo, C., Li, C., Guo, J., Loy, C. C., Hou, J., Kwong, S., & Cong, R. (2020). <a href="https://openaccess.thecvf.com/content_CVPR_2020/papers/Guo_Zero-Reference_Deep_Curve_Estimation_for_Low-Light_Image_Enhancement_CVPR_2020_paper.pdf" target="_blank">Zero-Reference Deep Curve Estimation for Low-Light Image Enhancement</a>. Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2020, 1780-1789.</p>
