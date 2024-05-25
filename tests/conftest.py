@@ -24,3 +24,8 @@ def sample_image():
 @pytest.fixture(scope="module")
 def preprocessed_image(sample_image):
     return preprocess(sample_image)
+
+@pytest.fixture(scope="module")
+def high_light_image():
+    image = Image.open("tests/enhanced.png")
+    return image
